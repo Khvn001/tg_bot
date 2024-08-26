@@ -2,13 +2,13 @@ package com.telegrambot.marketplace.command.user.pathway;
 
 import com.telegrambot.marketplace.command.Command;
 import com.telegrambot.marketplace.config.typehandlers.CommandHandler;
-import com.telegrambot.marketplace.dto.Answer;
+import com.telegrambot.marketplace.dto.bot.Answer;
 import com.telegrambot.marketplace.entity.location.Country;
 import com.telegrambot.marketplace.entity.user.User;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.enums.StateType;
 import com.telegrambot.marketplace.enums.UserType;
-import com.telegrambot.marketplace.dto.SendMessageBuilder;
+import com.telegrambot.marketplace.dto.bot.SendMessageBuilder;
 import com.telegrambot.marketplace.service.entity.CountryService;
 import com.telegrambot.marketplace.service.entity.StateService;
 import com.telegrambot.marketplace.service.entity.UserService;

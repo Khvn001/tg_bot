@@ -1,8 +1,8 @@
 package com.telegrambot.marketplace.command;
 
-import com.telegrambot.marketplace.dto.Answer;
+import com.telegrambot.marketplace.dto.bot.Answer;
 import com.telegrambot.marketplace.entity.user.User;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass

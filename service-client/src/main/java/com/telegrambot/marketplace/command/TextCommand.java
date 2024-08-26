@@ -1,8 +1,8 @@
 package com.telegrambot.marketplace.command;
 
 import com.telegrambot.marketplace.config.typehandlers.TextHandler;
-import com.telegrambot.marketplace.dto.Answer;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.Answer;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.entity.inventory.ProductPortion;
 import com.telegrambot.marketplace.entity.location.City;
 import com.telegrambot.marketplace.entity.location.Country;
@@ -19,7 +19,7 @@ import com.telegrambot.marketplace.enums.ProductSubcategoryName;
 import com.telegrambot.marketplace.enums.StateType;
 import com.telegrambot.marketplace.enums.UserType;
 import com.telegrambot.marketplace.repository.ProductPortionRepository;
-import com.telegrambot.marketplace.dto.SendMessageBuilder;
+import com.telegrambot.marketplace.dto.bot.SendMessageBuilder;
 import com.telegrambot.marketplace.service.entity.BasketService;
 import com.telegrambot.marketplace.service.entity.CityService;
 import com.telegrambot.marketplace.service.entity.CountryService;

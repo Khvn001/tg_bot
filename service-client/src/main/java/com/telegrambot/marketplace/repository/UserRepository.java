@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    Optional<User> findAllById(Long id);
+
     Optional<User> findByChatId(Long chatId);
 
     @Query("SELECT SUM(u.balance) FROM User u")

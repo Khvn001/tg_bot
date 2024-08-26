@@ -1,4 +1,4 @@
-package com.telegrambot.marketplace.dto;
+package com.telegrambot.marketplace.dto.bot;
 
 import com.telegrambot.marketplace.enums.TelegramType;
 import lombok.Getter;

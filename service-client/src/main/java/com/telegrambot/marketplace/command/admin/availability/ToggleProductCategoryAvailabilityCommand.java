@@ -1,12 +1,12 @@
 package com.telegrambot.marketplace.command.admin.availability;
 
 import com.telegrambot.marketplace.command.admin.AdminCommand;
-import com.telegrambot.marketplace.dto.Answer;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.Answer;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.entity.product.description.ProductCategory;
 import com.telegrambot.marketplace.entity.user.User;
 import com.telegrambot.marketplace.enums.UserType;
-import com.telegrambot.marketplace.dto.SendMessageBuilder;
+import com.telegrambot.marketplace.dto.bot.SendMessageBuilder;
 import com.telegrambot.marketplace.service.entity.ProductCategoryService;
 import com.telegrambot.marketplace.config.typehandlers.CommandHandler;
 import lombok.AllArgsConstructor;

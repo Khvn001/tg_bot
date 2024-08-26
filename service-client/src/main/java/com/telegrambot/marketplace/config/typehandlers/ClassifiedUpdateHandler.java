@@ -1,7 +1,7 @@
 package com.telegrambot.marketplace.config.typehandlers;
 
-import com.telegrambot.marketplace.dto.Answer;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.Answer;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.service.entity.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -8,7 +8,7 @@ import com.telegrambot.marketplace.enums.UserType;
 import com.telegrambot.marketplace.repository.BasketRepository;
 import com.telegrambot.marketplace.repository.StateRepository;
 import com.telegrambot.marketplace.repository.UserRepository;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.service.entity.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

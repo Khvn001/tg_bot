@@ -1,4 +1,4 @@
-package com.telegrambot.marketplace.dto;
+package com.telegrambot.marketplace.dto.bot;
 
 import lombok.Data;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

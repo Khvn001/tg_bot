@@ -1,8 +1,8 @@
 package com.telegrambot.marketplace;
 
 import com.telegrambot.marketplace.config.typehandlers.ClassifiedUpdateHandler;
-import com.telegrambot.marketplace.dto.Answer;
-import com.telegrambot.marketplace.dto.ClassifiedUpdate;
+import com.telegrambot.marketplace.dto.bot.Answer;
+import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
