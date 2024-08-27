@@ -5,15 +5,15 @@ FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
 # Copy the pom.xml and any other files necessary to build the project
-COPY pom.xml  .
+COPY pom.xml  /app/pom.xml
 
-COPY service-client/pom.xml .
+COPY service-client/pom.xml /app/service-client/pom.xml
 
 # Download all the dependencies
 RUN mvn dependency:go-offline -B
 
 # Copy the rest of the project
-COPY service-client/src ./src
+COPY service-client/src /app/service-client/src
 
 # Build the project and create the JAR file
 RUN mvn clean install -DskipTests
