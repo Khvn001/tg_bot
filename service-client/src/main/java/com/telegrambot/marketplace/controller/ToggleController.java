@@ -36,8 +36,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -65,7 +65,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product_category")
     public UnifiedResponseDto<ProductCategory> toggleProductCategory(
-            @RequestParam @Valid final ToggleProductCategoryRequestDto toggleProductCategoryRequestDto) {
+            @RequestBody @Valid final ToggleProductCategoryRequestDto toggleProductCategoryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -109,7 +109,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product_subcategory")
     public UnifiedResponseDto<ProductSubcategory> toggleProductSubcategory(
-            @RequestParam @Valid final ToggleProductSubcategoryRequestDto toggleProductSubcategoryRequestDto) {
+            @RequestBody @Valid final ToggleProductSubcategoryRequestDto toggleProductSubcategoryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -153,7 +153,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product")
     public UnifiedResponseDto<Product> toggleProduct(
-            @RequestParam @Valid final ToggleProductRequestDto toggleProductRequestDto) {
+            @RequestBody @Valid final ToggleProductRequestDto toggleProductRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -204,7 +204,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/country")
     public UnifiedResponseDto<Country> toggleCountry(
-            @RequestParam @Valid final ToggleCountryRequestDto toggleCountryRequestDto) {
+            @RequestBody @Valid final ToggleCountryRequestDto toggleCountryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -246,7 +246,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/city")
     public UnifiedResponseDto<City> toggleCity(
-            @RequestParam @Valid final ToggleCityRequestDto toggleCityRequestDto) {
+            @RequestBody @Valid final ToggleCityRequestDto toggleCityRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -291,7 +291,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/district")
     public UnifiedResponseDto<District> toggleDistrict(
-            @RequestParam @Valid final ToggleDistrictRequestDto toggleDistrictRequestDto) {
+            @RequestBody @Valid final ToggleDistrictRequestDto toggleDistrictRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {

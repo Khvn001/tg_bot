@@ -18,8 +18,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -88,9 +88,9 @@ public class AuthController {
             )
     )
     @SecurityRequirements()
-    @PostMapping("/auth")
+    @PostMapping()
     public UnifiedResponseDto<TwoTokenResponseDto> authenticateUser(
-            @RequestParam @Valid final LoginRequestDto loginRequestDto) {
+            @RequestBody @Valid final LoginRequestDto loginRequestDto) {
         User user = userService.findByChatId(String.valueOf(loginRequestDto.getChatId()));
 
         if (user == null) {

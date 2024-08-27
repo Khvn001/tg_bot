@@ -37,8 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -66,7 +66,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product_category")
     public UnifiedResponseDto<ProductCategory> addProductCategory(
-            @RequestParam @Valid final AddProductCategoryRequestDto addProductCategoryRequestDto) {
+            @RequestBody @Valid final AddProductCategoryRequestDto addProductCategoryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -110,7 +110,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product_subcategory")
     public UnifiedResponseDto<ProductSubcategory> addProductSubcategory(
-            @RequestParam @Valid final AddProductSubcategoryRequestDto addProductSubcategoryRequestDto) {
+            @RequestBody @Valid final AddProductSubcategoryRequestDto addProductSubcategoryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -163,7 +163,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/product")
     public UnifiedResponseDto<Product> addProduct(
-            @RequestParam @Valid final AddProductRequestDto addProductRequestDto) {
+            @RequestBody @Valid final AddProductRequestDto addProductRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -213,7 +213,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/country")
     public UnifiedResponseDto<Country> addCountry(
-            @RequestParam @Valid final AddCountryRequestDto addCountryRequestDto) {
+            @RequestBody @Valid final AddCountryRequestDto addCountryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -254,7 +254,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/city")
     public UnifiedResponseDto<City> addCity(
-            @RequestParam @Valid final AddCityRequestDto addCityRequestDto) {
+            @RequestBody @Valid final AddCityRequestDto addCityRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {
@@ -302,7 +302,7 @@ public class AddController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @PostMapping("/district")
     public UnifiedResponseDto<District> addDistrict(
-            @RequestParam @Valid final AddDistrictRequestDto addDistrictRequestDto) {
+            @RequestBody @Valid final AddDistrictRequestDto addDistrictRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser == null) {

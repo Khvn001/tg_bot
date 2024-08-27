@@ -13,6 +13,8 @@ public interface UserService {
 
     User findByChatId(String chatId);
 
+    User getByToken(String token);
+
     void addUserBalance(User user, BigDecimal amount);
 
 

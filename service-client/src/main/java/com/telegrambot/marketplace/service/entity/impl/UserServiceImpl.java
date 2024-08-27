@@ -2,11 +2,13 @@ package com.telegrambot.marketplace.service.entity.impl;
 
 import com.telegrambot.marketplace.entity.order.Basket;
 import com.telegrambot.marketplace.entity.user.State;
+import com.telegrambot.marketplace.entity.user.Token;
 import com.telegrambot.marketplace.entity.user.User;
 import com.telegrambot.marketplace.enums.StateType;
 import com.telegrambot.marketplace.enums.UserType;
 import com.telegrambot.marketplace.repository.BasketRepository;
 import com.telegrambot.marketplace.repository.StateRepository;
+import com.telegrambot.marketplace.repository.TokenRepository;
 import com.telegrambot.marketplace.repository.UserRepository;
 import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.service.entity.UserService;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final StateRepository stateRepository;
     private final BasketRepository basketRepository;
+    private final TokenRepository tokenRepository;
 
     @Override
     @Transactional
@@ -104,6 +107,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByChatId(final String chatId) {
         return userRepository.findByChatId(Long.valueOf(chatId)).orElse(null);
+    }
+
+    @Override
+    public User getByToken(final String token) {
+        return tokenRepository.getByValue(token)
+                .map(Token::getUser)
+                .orElse(null);
     }
 
     @Override
