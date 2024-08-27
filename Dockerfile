@@ -27,7 +27,7 @@ FROM eclipse-temurin:22-jdk-alpine
 ARG JAR_FILE=service-client/target/service-client-0.0.1-SNAPSHOT.jar
 
 # Copy the JAR file from the previous stage
-COPY --from=build /app/${JAR_FILE} app.jar
+COPY --from=build /app/${JAR_FILE} /app/app.jar
 
 # Install font packages (if required by your application)
 RUN apk add --no-cache fontconfig ttf-dejavu
@@ -36,4 +36,4 @@ RUN apk add --no-cache fontconfig ttf-dejavu
 EXPOSE 8080
 
 # Define the entrypoint to run the application
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
