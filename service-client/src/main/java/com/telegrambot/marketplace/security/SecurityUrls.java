@@ -9,8 +9,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SecurityUrls {
 
     public static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/swagger-ui**"),
+            new AntPathRequestMatcher("/api/swagger-ui/**"),
+            new AntPathRequestMatcher("/api/swagger-ui**"),
             new AntPathRequestMatcher("/v3/api-docs**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/system/settings"),
