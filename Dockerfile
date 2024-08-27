@@ -1,5 +1,5 @@
 # Use a Maven image to build the project
-FROM maven:3.8.5-openjdk-17 AS build
+FROM maven:3.9.9-eclipse-temurin-22-jammy AS build
 
 # Set the working directory inside the container
 WORKDIR /app
