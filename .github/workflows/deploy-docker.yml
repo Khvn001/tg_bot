@@ -1,0 +1,54 @@
+name: Deploy to Server using Docker
+
+on:
+  push:
+    branches:
+      - main  # or your deployment branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          docker build --no-cache --build-arg BUILD_DATE=$(date +%s) -t telegram_bot:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker tag telegram_bot:latest ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+
+      - name: Set up SSH for First Server
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Deploy to First Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            # Pull the latest image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+
+            # Stop and remove existing container
+            docker stop telegram_bot || true
+            docker rm telegram_bot || true
+
+            # Run the new container
+            docker run -d --name telegram_bot -p 8080:8080 \
+              -e POSTGRES_JDBC_URL=${{ secrets.POSTGRES_JDBC_URL }} \
+              -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} \
+              -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+              -e S3_PUBLIC_URL=${{ secrets.S3_PUBLIC_URL }} \
+              -e S3_PRIVATE_URL=${{ secrets.S3_PRIVATE_URL }} \
+              -e S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} \
+              -e S3_PRIVATE_KEY=${{ secrets.S3_PRIVATE_KEY }} \
+              -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
+              -e BOT_NAME=${{ secrets.BOT_NAME }} \
+              -e BOT_TOKEN=${{ secrets.BOT_TOKEN }} \
+              ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+          EOF

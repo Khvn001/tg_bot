@@ -202,7 +202,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
-    @PostMapping("/product")
+    @PostMapping("/country")
     public UnifiedResponseDto<Country> toggleCountry(
             @RequestParam @Valid final ToggleCountryRequestDto toggleCountryRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -244,7 +244,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
-    @PostMapping("/product")
+    @PostMapping("/city")
     public UnifiedResponseDto<City> toggleCity(
             @RequestParam @Valid final ToggleCityRequestDto toggleCityRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -289,7 +289,7 @@ public class ToggleController {
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @ApiResponse(responseCode = "500", description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
-    @PostMapping("/product")
+    @PostMapping("/district")
     public UnifiedResponseDto<District> toggleDistrict(
             @RequestParam @Valid final ToggleDistrictRequestDto toggleDistrictRequestDto) {
         final User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

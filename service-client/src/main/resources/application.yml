@@ -66,5 +66,14 @@ bot:
 filesize:
   photo: 3145728
   video: 15728640
+jwt:
+  token:
+    secret: O6|IucrVQ9
+    algorithm: HmacSHA256
+    expiration:
+      access-token-hours: 24
+      refresh-token-days: 90
+      email-token-hours: 24
+      jitsi-token-hours: 24
 server:
   port: 8080
