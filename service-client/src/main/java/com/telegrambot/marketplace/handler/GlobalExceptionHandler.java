@@ -3,6 +3,7 @@ package com.telegrambot.marketplace.handler;
 import com.telegrambot.marketplace.dto.web.ExceptionMessage;
 import com.telegrambot.marketplace.dto.web.UnifiedResponseDto;
 import com.telegrambot.marketplace.exception.CustomAuthenticationException;
+import com.telegrambot.marketplace.exception.DatabaseEntryAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,7 @@ import java.util.List;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({
-    })
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<Object> handleBadArgumentsExceptions(final RuntimeException ex) {
         final ExceptionMessage exceptionMessage = new ExceptionMessage(
                 HttpStatus.BAD_REQUEST.value(),
@@ -37,8 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({
-    })
+    @ExceptionHandler({DatabaseEntryAlreadyExistsException.class})
     public ResponseEntity<Object> handleValidationException(final RuntimeException ex) {
         final ExceptionMessage exceptionMessage = new ExceptionMessage(
                 HttpStatus.PRECONDITION_FAILED.value(),
