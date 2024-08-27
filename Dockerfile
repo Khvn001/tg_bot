@@ -5,7 +5,9 @@ FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
 # Copy the pom.xml and any other files necessary to build the project
-COPY pom.xml .
+COPY pom.xml  .
+
+COPY service-client/pom.xml .
 
 # Download all the dependencies
 RUN mvn dependency:go-offline -B
