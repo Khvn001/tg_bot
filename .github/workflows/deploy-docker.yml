@@ -28,6 +28,33 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
+      - name: Ensure Docker is installed and updated on the server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            # Check if Docker is installed, and install it if not
+            if ! [ -x "$(command -v docker)" ]; then
+              echo "Docker not found. Installing Docker..."
+              curl -fsSL https://get.docker.com -o get-docker.sh
+              sh get-docker.sh
+              sudo usermod -aG docker $USER
+              newgrp docker
+              rm get-docker.sh
+            else
+              echo "Docker is already installed. Checking for updates..."
+              sudo apt-get update
+              sudo apt-get install --only-upgrade docker-ce docker-ce-cli containerd.io
+            fi
+          
+            # Check if Docker Compose is installed, and install it if not
+            if ! [ -x "$(command -v docker-compose)" ]; then
+              echo "Docker Compose not found. Installing Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/2.10.2/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            else
+              echo "Docker Compose is already installed."
+            fi
+          EOF
+
       - name: Deploy to First Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
