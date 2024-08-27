@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy the pom.xml and any other files necessary to build the project
 COPY pom.xml  /app/pom.xml
 
+COPY checkstyle  /app/checkstyle
+
 COPY service-client/pom.xml /app/service-client/pom.xml
 
 # Download all the dependencies
