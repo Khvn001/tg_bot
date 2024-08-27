@@ -11,7 +11,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
 # Copy the rest of the project
-COPY src ./src
+COPY service-client/src ./src
 
 # Build the project and create the JAR file
 RUN mvn clean install -DskipTests
