@@ -45,14 +45,6 @@ jobs:
               sudo apt-get install --only-upgrade docker-ce docker-ce-cli containerd.io
             fi
           
-            # Check if Docker Compose is installed, and install it if not
-            if ! [ -x "$(command -v docker-compose)" ]; then
-              echo "Docker Compose not found. Installing Docker Compose..."
-              sudo curl -L "https://github.com/docker/compose/releases/download/2.10.2/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-            else
-              echo "Docker Compose is already installed."
-            fi
           EOF
 
       - name: Deploy to First Server
@@ -61,10 +53,12 @@ jobs:
             # Pull the latest image
             docker pull ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
 
-            # Stop and remove existing container
-            docker stop telegram_bot || true
-            docker rm telegram_bot || true
-
+            # Check if the container exists, then stop and remove it if it does
+            if [ "$(docker ps -a -q -f name=telegram_bot)" ]; then
+              docker stop telegram_bot
+              docker rm telegram_bot
+            fi
+  
             # Run the new container
             docker run -d --name telegram_bot -p 8080:8080 \
               -e POSTGRES_JDBC_URL=${{ secrets.POSTGRES_JDBC_URL }} \
