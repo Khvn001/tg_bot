@@ -107,5 +107,6 @@ public class User {
     private List<ProductPortion> courierProductPortions;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Set<Token> tokens;
 }
