@@ -7,6 +7,9 @@ import com.telegrambot.marketplace.entity.location.District;
 import com.telegrambot.marketplace.entity.product.description.Product;
 import com.telegrambot.marketplace.entity.product.description.ProductCategory;
 import com.telegrambot.marketplace.entity.product.description.ProductSubcategory;
+import com.telegrambot.marketplace.enums.CountryName;
+import com.telegrambot.marketplace.enums.ProductCategoryName;
+import com.telegrambot.marketplace.enums.ProductSubcategoryName;
 import com.telegrambot.marketplace.repository.CityRepository;
 import com.telegrambot.marketplace.repository.CountryRepository;
 import com.telegrambot.marketplace.repository.DistrictRepository;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,6 +53,16 @@ public class GetController {
         return new UnifiedResponseDto<>(categories);
     }
 
+    @Operation(summary = "Получить все возможные категории продуктов для добавления")
+    @ApiResponse(responseCode = "200", description = "Список категории продуктов")
+    @GetMapping("/possible-product-categories")
+    public UnifiedResponseDto<String[]> getAllProductCategoryNames() {
+        // Use Stream to map the enum values to their corresponding country names
+        return new UnifiedResponseDto(Stream.of(ProductCategoryName.values())
+                .map(ProductCategoryName::getCategory)
+                .toArray(String[]::new));
+    }
+
     @Operation(summary = "Получить все подкатегории продуктов")
     @ApiResponse(responseCode = "200", description = "Список подкатегорий продуктов")
     @GetMapping("/product-subcategories")
@@ -58,6 +72,16 @@ public class GetController {
                 .map(Objects::toString)
                 .collect(Collectors.toList());
         return new UnifiedResponseDto<>(subcategories);
+    }
+
+    @Operation(summary = "Получить все возможные подкатегории продуктов для добавления")
+    @ApiResponse(responseCode = "200", description = "Список подкатегории продуктов")
+    @GetMapping("/possible-product-subcategories")
+    public UnifiedResponseDto<String[]> getAllProductSubcategoryNames() {
+        // Use Stream to map the enum values to their corresponding country names
+        return new UnifiedResponseDto(Stream.of(ProductSubcategoryName.values())
+                .map(ProductSubcategoryName::getSubcategory)
+                .toArray(String[]::new));
     }
 
     @Operation(summary = "Получить все продукты")
@@ -79,6 +103,16 @@ public class GetController {
                 .map(Objects::toString)
                 .collect(Collectors.toList());
         return new UnifiedResponseDto<>(countries);
+    }
+
+    @Operation(summary = "Получить все возможные страны для добавления")
+    @ApiResponse(responseCode = "200", description = "Список стран")
+    @GetMapping("/possible-countries")
+    public UnifiedResponseDto<String[]> getAllCountryNames() {
+        // Use Stream to map the enum values to their corresponding country names
+        return new UnifiedResponseDto(Stream.of(CountryName.values())
+                .map(CountryName::getCountry)
+                .toArray(String[]::new));
     }
 
     @Operation(summary = "Получить все города")
