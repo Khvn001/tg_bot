@@ -59,7 +59,7 @@ public class GetController {
     public UnifiedResponseDto<String[]> getAllProductCategoryNames() {
         // Use Stream to map the enum values to their corresponding country names
         return new UnifiedResponseDto(Stream.of(ProductCategoryName.values())
-                .map(ProductCategoryName::getCategory)
+                .map(Enum::name)
                 .toArray(String[]::new));
     }
 
@@ -80,7 +80,7 @@ public class GetController {
     public UnifiedResponseDto<String[]> getAllProductSubcategoryNames() {
         // Use Stream to map the enum values to their corresponding country names
         return new UnifiedResponseDto(Stream.of(ProductSubcategoryName.values())
-                .map(ProductSubcategoryName::getSubcategory)
+                .map(Enum::name)
                 .toArray(String[]::new));
     }
 
@@ -111,7 +111,7 @@ public class GetController {
     public UnifiedResponseDto<String[]> getAllCountryNames() {
         // Use Stream to map the enum values to their corresponding country names
         return new UnifiedResponseDto(Stream.of(CountryName.values())
-                .map(CountryName::getCountry)
+                .map(Enum::name)
                 .toArray(String[]::new));
     }
 
