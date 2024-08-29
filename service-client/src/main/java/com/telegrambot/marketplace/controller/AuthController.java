@@ -103,4 +103,65 @@ public class AuthController {
 
         return new UnifiedResponseDto<>(tokenService.createTokens(user));
     }
+
+    @Operation(summary = "Обновление Refresh токена")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @ApiResponse(
+            responseCode = "401",
+            description = "Jwt token is expired or invalid",
+            content = @Content(
+                    schema = @Schema(implementation = UnifiedResponseDto.class),
+                    examples = {
+                            @ExampleObject(name = "ErrorExample", value =
+                                    "{\n" +
+                                            "  \"data\": null,\n" +
+                                            "  \"status\": 401,\n" +
+                                            "  \"message\": \"Error message\",\n" +
+                                            "  \"errors\": [\"error detail\"],\n" +
+                                            "  \"timestamp\": \"2024-02-04T20:46:06.808Z\"\n" +
+                                            "}"
+                            )
+                    }
+            )
+    )
+    @ApiResponse(
+            responseCode = "422",
+            description = "Client Not Found",
+            content = @Content(
+                    schema = @Schema(implementation = UnifiedResponseDto.class),
+                    examples = {
+                            @ExampleObject(name = "ErrorExample", value =
+                                    "{\n" +
+                                            "  \"data\": null,\n" +
+                                            "  \"status\": 422,\n" +
+                                            "  \"message\": \"Error message\",\n" +
+                                            "  \"errors\": [\"error detail\"],\n" +
+                                            "  \"timestamp\": \"2024-02-04T20:46:06.808Z\"\n" +
+                                            "}"
+                            )
+                    }
+            )
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Ошибка сервера",
+            content = @Content(
+                    schema = @Schema(implementation = UnifiedResponseDto.class),
+                    examples = {
+                            @ExampleObject(name = "ErrorExample", value =
+                                    "{\n" +
+                                            "  \"data\": null,\n" +
+                                            "  \"status\": 500,\n" +
+                                            "  \"message\": \"Error message\",\n" +
+                                            "  \"errors\": [\"error detail\"],\n" +
+                                            "  \"timestamp\": \"2024-02-04T20:46:06.808Z\"\n" +
+                                            "}"
+                            )
+                    }
+            )
+    )
+    @PostMapping("/refresh-token")
+    public UnifiedResponseDto<TwoTokenResponseDto> refreshToken(@RequestBody @Valid final TwoTokenResponseDto tokens) {
+        return new UnifiedResponseDto<>(tokenService.refreshToken(tokens.getAccessToken(), tokens.getRefreshToken()));
+    }
 }
