@@ -21,7 +21,8 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public District findByCountryAndCityAndNameAndAllowedTrue(final Country country, final City city, final String name) {
+    public District findByCountryAndCityAndNameAndAllowedTrue(
+            final Country country, final City city, final String name) {
         return districtRepository.findByCountryAndCityAndNameAndAllowedIsTrue(country, city, name).orElse(null);
     }
 

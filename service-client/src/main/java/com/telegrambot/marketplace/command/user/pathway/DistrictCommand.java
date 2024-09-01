@@ -76,7 +76,8 @@ public class DistrictCommand implements Command {
         Long productId = Long.parseLong(parts[ONE_NUMBER]);
         Product product = productService.findById(productId);
         ProductSubcategoryName subcategoryName = ProductSubcategoryName.valueOf(parts[TWO_NUMBER].toUpperCase());
-        ProductSubcategory subcategory = productSubcategoryService.findByNameAndAllowedTrue(String.valueOf(subcategoryName));
+        ProductSubcategory subcategory = productSubcategoryService
+                .findByNameAndAllowedTrue(String.valueOf(subcategoryName));
         ProductCategoryName categoryName = ProductCategoryName.valueOf(parts[THREE_NUMBER].toUpperCase());
         ProductCategory category = productCategoryService.findByNameAndAllowedTrue(String.valueOf(categoryName));
         Long cityId = Long.parseLong(parts[FOUR_NUMBER]);
