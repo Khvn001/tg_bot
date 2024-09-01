@@ -14,9 +14,17 @@ public class ProductSubcategoryServiceImpl implements ProductSubcategoryService 
 
     private final ProductSubcategoryRepository productSubcategoryRepository;
 
-    public ProductSubcategory findByName(final String productCategoryName) {
+    @Override
+    public ProductSubcategory findByNameAndAllowedTrue(final String productCategoryName) {
         return productSubcategoryRepository
                 .findByAllowedIsTrueAndName(ProductSubcategoryName.valueOf(productCategoryName))
+                .orElse(null);
+    }
+
+    @Override
+    public ProductSubcategory findByName(final String productCategoryName) {
+        return productSubcategoryRepository
+                .findByName(ProductSubcategoryName.valueOf(productCategoryName))
                 .orElse(null);
     }
 

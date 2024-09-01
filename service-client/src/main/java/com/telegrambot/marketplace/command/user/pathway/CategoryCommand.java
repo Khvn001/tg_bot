@@ -65,7 +65,7 @@ public class CategoryCommand implements Command {
         }
 
         String[] parts = update.getArgs().toArray(new String[0]);
-        ProductCategory category = productCategoryService.findByName(parts[ZERO_NUMBER].toUpperCase());
+        ProductCategory category = productCategoryService.findByNameAndAllowedTrue(parts[ZERO_NUMBER].toUpperCase());
         Long cityId = Long.parseLong(parts[ONE_NUMBER]);
         CountryName countryName = CountryName.valueOf(parts[TWO_NUMBER].toUpperCase());
         City city = cityService.findById(cityId);
@@ -87,7 +87,7 @@ public class CategoryCommand implements Command {
             final Set<ProductSubcategory> productSubcategories, final String categoryName,
             final Long cityId, final CountryName countryName) {
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        Country country = countryService.findByCountryName(countryName);
+        Country country = countryService.findByCountryNameAndAllowedTrue(countryName);
         buttons.add(InlineKeyboardButton.builder()
                 .text("Change Country")
                 .callbackData("/start")

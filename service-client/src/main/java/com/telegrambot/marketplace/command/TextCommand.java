@@ -230,9 +230,9 @@ public class TextCommand implements Command {
                     .message("Please provide the country, city, and district separated by spaces.")
                     .build();
         }
-        Country country = countryService.findByCountryName(CountryName.valueOf(parts[0].toUpperCase()));
-        City city = cityService.findByCountryAndName(country, parts[1]);
-        District district = districtService.findByCountryAndCityAndName(country, city, parts[2]);
+        Country country = countryService.findByCountryNameAndAllowedTrue(CountryName.valueOf(parts[0].toUpperCase()));
+        City city = cityService.findByCountryAndNameAndAllowedTrue(country, parts[1]);
+        District district = districtService.findByCountryAndCityAndNameAndAllowedTrue(country, city, parts[2]);
         if (country == null || city == null || district == null) {
             return new SendMessageBuilder()
                     .chatId(user.getChatId())
@@ -261,8 +261,8 @@ public class TextCommand implements Command {
                     .message("Please provide the product category, subcategory, and product separated by spaces.")
                     .build();
         }
-        ProductCategory category = productCategoryService.findByName(parts[0].toUpperCase());
-        ProductSubcategory subcategory = productSubcategoryService.findByName(parts[1].toUpperCase());
+        ProductCategory category = productCategoryService.findByNameAndAllowedTrue(parts[0].toUpperCase());
+        ProductSubcategory subcategory = productSubcategoryService.findByNameAndAllowedTrue(parts[1].toUpperCase());
         Product product = productService.findByName(category, subcategory, parts[2]);
         if (category == null || subcategory == null || product == null) {
             return new SendMessageBuilder()

@@ -11,7 +11,6 @@ import com.telegrambot.marketplace.entity.user.User;
 import com.telegrambot.marketplace.enums.UserType;
 import com.telegrambot.marketplace.exception.NotFoundException;
 import com.telegrambot.marketplace.service.entity.StatisticsService;
-import com.telegrambot.marketplace.service.entity.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,11 +20,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -34,7 +35,30 @@ import java.util.List;
 @Tag(name = "Команды администратора для статистики")
 public class StatisticsController {
     private final StatisticsService statisticsService;
-    private final UserService userService;
+
+    @GetMapping("/commands")
+    public UnifiedResponseDto<List<String>> getCommandNames() {
+        List<String> commandNames = Arrays.asList(
+                "product_inventory_city_stats",
+                "product_inventory_district_stats",
+                "available_countries",
+                "unavailable_countries",
+                "available_cities",
+                "unavailable_cities",
+                "available_districts",
+                "unavailable_districts",
+                "available_product_categories",
+                "unavailable_product_categories",
+                "available_product_subcategories",
+                "unavailable_product_subcategories",
+                "available_products",
+                "unavailable_products",
+                "user_count",
+                "sum_user_balances"
+        );
+
+        return new UnifiedResponseDto<>(commandNames);
+    }
 
     @Operation(summary = "Получение статистики.")
     @ApiResponse(responseCode = "200", description = "ok",

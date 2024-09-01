@@ -57,7 +57,7 @@ public class CountryCommand implements Command {
 
         CountryName countryName = CountryName.valueOf(update.getArgs().getFirst().toUpperCase());
         log.info(countryName.getCountry());
-        user.setCountry(countryService.findByCountryName(countryName));
+        user.setCountry(countryService.findByCountryNameAndAllowedTrue(countryName));
         userService.save(user);
         return new SendMessageBuilder()
                 .chatId(user.getChatId())
@@ -68,7 +68,7 @@ public class CountryCommand implements Command {
 
     private List<InlineKeyboardButton> getCityButtons(final CountryName countryName) {
         // Fetch cities from the database with boolean field is_allowed = true
-        Country country = countryService.findByCountryName(countryName);
+        Country country = countryService.findByCountryNameAndAllowedTrue(countryName);
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(InlineKeyboardButton.builder()
                 .text("Change Country")

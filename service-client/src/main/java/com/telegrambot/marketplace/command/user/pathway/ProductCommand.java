@@ -79,8 +79,8 @@ public class ProductCommand implements Command {
         Long cityId = Long.parseLong(parts[THREE_NUMBER]);
         CountryName countryName = CountryName.valueOf(parts[FOUR_NUMBER].toUpperCase());
         City city = cityService.findById(cityId);
-        ProductCategory category = productCategoryService.findByName(String.valueOf(categoryName));
-        ProductSubcategory subcategory = productSubcategoryService.findByName(subcategoryName.toString());
+        ProductCategory category = productCategoryService.findByNameAndAllowedTrue(String.valueOf(categoryName));
+        ProductSubcategory subcategory = productSubcategoryService.findByNameAndAllowedTrue(subcategoryName.toString());
         Product product = productService.findById(Long.valueOf(productId));
 
         Map<District, List<ProductPortion>> availableProducts = productPortionService
@@ -108,7 +108,7 @@ public class ProductCommand implements Command {
                                                          final Long cityId,
                                                          final CountryName countryName) {
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        Country country = countryService.findByCountryName(countryName);
+        Country country = countryService.findByCountryNameAndAllowedTrue(countryName);
         buttons.add(InlineKeyboardButton.builder()
                 .text("Change Country")
                 .callbackData("/start")

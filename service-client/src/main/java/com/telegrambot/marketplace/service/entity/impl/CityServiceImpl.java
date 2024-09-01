@@ -22,8 +22,13 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City findByCountryAndName(final Country country, final String name) {
+    public City findByCountryAndNameAndAllowedTrue(final Country country, final String name) {
         return cityRepository.findByCountryAndAllowedIsTrueAndName(country, name).orElse(null);
+    }
+
+    @Override
+    public City findByCountryAndName(final Country country, final String name) {
+        return cityRepository.findByCountryAndName(country, name).orElse(null);
     }
 
     @Override

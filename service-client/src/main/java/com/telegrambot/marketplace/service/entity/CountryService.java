@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CountryService {
 
+    Country findByCountryNameAndAllowedTrue(CountryName countryName);
+
     Country findByCountryName(CountryName countryName);
 
     List<Country> findAllByAllowedIsTrue();

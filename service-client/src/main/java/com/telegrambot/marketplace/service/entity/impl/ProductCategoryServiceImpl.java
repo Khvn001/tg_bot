@@ -14,8 +14,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
 
     @Override
-    public ProductCategory findByName(final String productCategoryName) {
+    public ProductCategory findByNameAndAllowedTrue(final String productCategoryName) {
         return productCategoryRepository.findByAllowedIsTrueAndName(ProductCategoryName.valueOf(productCategoryName))
+                .orElse(null);
+    }
+
+    @Override
+    public ProductCategory findByName(final String productCategoryName) {
+        return productCategoryRepository.findByName(ProductCategoryName.valueOf(productCategoryName))
                 .orElse(null);
     }
 

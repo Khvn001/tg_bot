@@ -16,8 +16,13 @@ public class CountryServiceImpl implements CountryService {
     private final CountryRepository countryRepository;
 
     @Override
-    public Country findByCountryName(final CountryName countryName) {
+    public Country findByCountryNameAndAllowedTrue(final CountryName countryName) {
         return countryRepository.findByNameAndAllowedIsTrue(countryName).orElse(null);
+    }
+
+    @Override
+    public Country findByCountryName(CountryName countryName) {
+        return countryRepository.findByName(countryName).orElse(null);
     }
 
     @Override

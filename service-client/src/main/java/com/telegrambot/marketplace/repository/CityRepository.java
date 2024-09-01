@@ -17,6 +17,8 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findByCountryAndAllowedIsTrueAndName(Country country, String name);
 
+    Optional<City> findByCountryAndName(Country country, String name);
+
     Optional<City> findByName(String cityName);
 
     List<City> findByAllowedIsFalse();

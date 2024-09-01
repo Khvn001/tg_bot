@@ -9,6 +9,8 @@ public interface CityService {
 
     List<City> findByCountryIdAndAllowed(Long countryId);
 
+    City findByCountryAndNameAndAllowedTrue(Country country, String name);
+
     City findByCountryAndName(Country country, String name);
 
     City findById(Long cityId);

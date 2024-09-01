@@ -8,6 +8,8 @@ public interface DistrictService {
 
     District findById(Long districtId);
 
+    District findByCountryAndCityAndNameAndAllowedTrue(Country country, City city, String name);
+
     District findByCountryAndCityAndName(Country country, City city, String name);
 
     District save(District district);

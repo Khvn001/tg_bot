@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
     Optional<ProductCategory> findByAllowedIsTrueAndName(ProductCategoryName name);
 
+    Optional<ProductCategory> findByName(ProductCategoryName name);
+
     List<ProductCategory> findByAllowedIsFalse();
 
     List<ProductCategory> findByAllowedIsTrue();

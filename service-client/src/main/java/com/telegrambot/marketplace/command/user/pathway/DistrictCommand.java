@@ -76,9 +76,9 @@ public class DistrictCommand implements Command {
         Long productId = Long.parseLong(parts[ONE_NUMBER]);
         Product product = productService.findById(productId);
         ProductSubcategoryName subcategoryName = ProductSubcategoryName.valueOf(parts[TWO_NUMBER].toUpperCase());
-        ProductSubcategory subcategory = productSubcategoryService.findByName(String.valueOf(subcategoryName));
+        ProductSubcategory subcategory = productSubcategoryService.findByNameAndAllowedTrue(String.valueOf(subcategoryName));
         ProductCategoryName categoryName = ProductCategoryName.valueOf(parts[THREE_NUMBER].toUpperCase());
-        ProductCategory category = productCategoryService.findByName(String.valueOf(categoryName));
+        ProductCategory category = productCategoryService.findByNameAndAllowedTrue(String.valueOf(categoryName));
         Long cityId = Long.parseLong(parts[FOUR_NUMBER]);
         CountryName countryName = CountryName.valueOf(parts[FIVE_NUMBER].toUpperCase());
         user.getState().setStateType(StateType.ORDER);
@@ -100,7 +100,7 @@ public class DistrictCommand implements Command {
                                                          final Long cityId,
                                                          final CountryName countryName) {
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        Country country = countryService.findByCountryName(countryName);
+        Country country = countryService.findByCountryNameAndAllowedTrue(countryName);
         buttons.add(InlineKeyboardButton.builder()
                 .text("Change Country")
                 .callbackData("/start")

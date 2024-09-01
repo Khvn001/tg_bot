@@ -13,6 +13,8 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
 
     Optional<Country> findByNameAndAllowedIsTrue(CountryName name);
 
+    Optional<Country> findByName(CountryName name);
+
     List<Country> findAllByAllowedIsTrue();
 
     List<Country> findByAllowedIsFalse();

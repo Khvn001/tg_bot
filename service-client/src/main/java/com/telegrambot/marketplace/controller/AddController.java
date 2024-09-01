@@ -243,7 +243,7 @@ public class AddController {
         }
     }
 
-    @Operation(summary = "Добавление новой города.")
+    @Operation(summary = "Добавление нового города.")
     @ApiResponse(responseCode = "200", description = "ok",
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @ApiResponse(responseCode = "403", description = "Unauthorized",
@@ -291,7 +291,7 @@ public class AddController {
         }
     }
 
-    @Operation(summary = "Добавление новой страны.")
+    @Operation(summary = "Добавление нового района.")
     @ApiResponse(responseCode = "200", description = "ok",
             content = @Content(schema = @Schema(implementation = UnifiedResponseDto.class)))
     @ApiResponse(responseCode = "403", description = "Unauthorized",
