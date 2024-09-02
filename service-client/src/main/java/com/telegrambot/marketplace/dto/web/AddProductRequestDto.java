@@ -2,7 +2,9 @@ package com.telegrambot.marketplace.dto.web;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -23,6 +25,8 @@ public class AddProductRequestDto {
     @Schema(description = "Описание", example = "")
     private String description;
 
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = false)
     @Schema(description = "Price", example = "3.6", required = true)
     private BigDecimal price;
 }
