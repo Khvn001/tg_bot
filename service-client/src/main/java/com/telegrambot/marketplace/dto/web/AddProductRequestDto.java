@@ -23,7 +23,6 @@ public class AddProductRequestDto {
     @Schema(description = "Описание", example = "")
     private String description;
 
-    @NotBlank
     @Schema(description = "Price", example = "3.6", required = true)
     private BigDecimal price;
 }
