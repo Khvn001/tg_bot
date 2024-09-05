@@ -22,8 +22,8 @@ import java.math.BigDecimal;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/add")
-@Tag(name = "Команды администратора для работы с юзером")
+@RequestMapping("/api/v1/user")
+@Tag(name = "Команды администратора для работы с пользователями")
 @Slf4j
 public class UserController {
 
