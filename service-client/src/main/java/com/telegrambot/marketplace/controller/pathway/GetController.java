@@ -1,4 +1,4 @@
-package com.telegrambot.marketplace.controller;
+package com.telegrambot.marketplace.controller.pathway;
 
 import com.telegrambot.marketplace.dto.web.UnifiedResponseDto;
 import com.telegrambot.marketplace.entity.location.City;

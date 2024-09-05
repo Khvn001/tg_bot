@@ -119,7 +119,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void addUserBalance(final User user, final BigDecimal amount) {
-        user.setBalance(user.getBalance().add(amount));
+        BigDecimal newBalance = user.getBalance().add(amount);
+
+        // Check if the new balance is less than zero
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("User balance cannot be negative.");
+        }
+
+        user.setBalance(newBalance);
         userRepository.save(user);
         log.info("User: {}. Balance has been added. Amount: {}", user.getChatId(), amount);
     }

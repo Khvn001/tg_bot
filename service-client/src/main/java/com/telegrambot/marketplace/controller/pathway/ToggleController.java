@@ -1,4 +1,4 @@
-package com.telegrambot.marketplace.controller;
+package com.telegrambot.marketplace.controller.pathway;
 
 import com.telegrambot.marketplace.dto.web.ToggleCityRequestDto;
 import com.telegrambot.marketplace.dto.web.ToggleCountryRequestDto;
