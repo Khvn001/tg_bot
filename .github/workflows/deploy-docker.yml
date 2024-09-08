@@ -100,7 +100,7 @@ jobs:
 
           EOF
 
-      - name: Deploy to First Server
+      - name: Deploy to Second Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER_2 }}@${{ secrets.SERVER_HOST_2 }} << 'EOF'
             # Pull the latest image
