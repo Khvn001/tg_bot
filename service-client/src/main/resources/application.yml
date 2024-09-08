@@ -41,6 +41,8 @@ spring:
       enabled: true
       max-file-size: 15MB
       max-request-size: 30MB
+security:
+  cors_url: ${CORS_URL:http://localhost:8000}
 logging:
   level:
     com.telegrambot.marketplace: TRACE
