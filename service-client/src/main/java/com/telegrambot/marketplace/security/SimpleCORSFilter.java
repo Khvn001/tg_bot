@@ -17,7 +17,7 @@ public class SimpleCORSFilter extends HttpFilter {
     private String corsUrl;
 
     @Override
-    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
         response.setHeader("Access-Control-Allow-Origin", corsUrl);
