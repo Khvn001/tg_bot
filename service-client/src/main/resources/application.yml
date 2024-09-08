@@ -65,6 +65,7 @@ aws:
 bot:
   name: ${BOT_NAME:BotName}
   token: ${BOT_TOKEN:BotToken}
+  adminUsername: ${BOT_ADMIN_USER:admin}
 filesize:
   photo: 3145728
   video: 15728640

@@ -71,6 +71,7 @@ jobs:
               -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
               -e BOT_NAME=${{ secrets.BOT_NAME }} \
               -e BOT_TOKEN=${{ secrets.BOT_TOKEN }} \
+              -e BOT_ADMIN_USER=${{ secrets.BOT_ADMIN_USER }} \
               -e CORS_URL=${{ secrets.CORS_URL }} \
               ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
           EOF
@@ -124,6 +125,7 @@ jobs:
               -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME_2 }} \
               -e BOT_NAME=${{ secrets.BOT_NAME_2 }} \
               -e BOT_TOKEN=${{ secrets.BOT_TOKEN_2 }} \
+              -e BOT_ADMIN_USER=${{ secrets.BOT_ADMIN_USER_2 }} \
               -e CORS_URL=${{ secrets.CORS_URL_2 }} \
               ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
           EOF
