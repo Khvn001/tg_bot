@@ -122,6 +122,7 @@ public class CommandConfig {
         callbackHandler.registerCallbackCommand("/city_", cityCommand);
         callbackHandler.registerCallbackCommand("/district_", districtCommand);
         callbackHandler.registerCallbackCommand("/profile_", profileInfoViewCommand);
+        callbackHandler.registerCallbackCommand("/add_balance_", profileInfoViewCommand);
         log.info(callbackHandler.toString());
         return callbackHandler;
     }
