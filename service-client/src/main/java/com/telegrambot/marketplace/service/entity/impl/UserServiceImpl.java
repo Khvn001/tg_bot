@@ -14,6 +14,7 @@ import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.service.entity.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,6 +130,15 @@ public class UserServiceImpl implements UserService {
         user.setBalance(newBalance);
         userRepository.save(user);
         log.info("User: {}. Balance has been added. Amount: {}", user.getChatId(), amount);
+    }
+
+    @Transactional
+    public User getUserWithReferrals(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        // Initialize the referrals collection
+        assert user != null;
+        Hibernate.initialize(user.getReferrals());
+        return user;
     }
 
 }

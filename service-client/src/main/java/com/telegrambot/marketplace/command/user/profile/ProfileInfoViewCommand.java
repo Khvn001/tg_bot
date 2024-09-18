@@ -7,6 +7,7 @@ import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
 import com.telegrambot.marketplace.entity.user.User;
 import com.telegrambot.marketplace.enums.UserType;
 import com.telegrambot.marketplace.dto.bot.SendMessageBuilder;
+import com.telegrambot.marketplace.service.entity.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class ProfileInfoViewCommand implements Command {
+
+    private final UserService userService;
 
     @Override
     public Class handler() {
@@ -53,7 +56,8 @@ public class ProfileInfoViewCommand implements Command {
 
     private String generateProfileContentMessage(final User user) {
         // Ensure the list is not null and initialized
-        int referralCount = user.getReferrals() != null ? user.getReferrals().size() : 0;
+        User userWithReferrals = userService.getUserWithReferrals(user.getId());
+        int referralCount = userWithReferrals.getReferrals() != null ? userWithReferrals.getReferrals().size() : 0;
 
         return "Your profile information:\n" + "Name: " + user.getName() + "\n" +
                 "Balance: " + user.getBalance() + "\n" +

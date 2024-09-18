@@ -17,6 +17,6 @@ public interface UserService {
 
     void addUserBalance(User user, BigDecimal amount);
 
-
+    User getUserWithReferrals(Long userId);
 
 }
