@@ -1,5 +1,6 @@
 package com.telegrambot.marketplace.service.entity.impl;
 
+import com.telegrambot.marketplace.entity.inventory.Photo;
 import com.telegrambot.marketplace.entity.inventory.ProductInventoryCity;
 import com.telegrambot.marketplace.entity.inventory.ProductInventoryDistrict;
 import com.telegrambot.marketplace.entity.inventory.ProductPortion;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -120,11 +122,12 @@ public class ProductPortionServiceImpl implements ProductPortionService {
                                              final District district, final ProductCategory category,
                                              final ProductSubcategory subcategory, final Product product,
                                              final BigDecimal latitude, final BigDecimal longitude,
-                                             final BigDecimal amount, final String photoUrl) {
+                                             final BigDecimal amount, final List<String> photoUrls) {
 
         // Ensure user is managed by merging
         User managedCourier = entityManager.merge(user);
 
+        // Create new ProductPortion
         ProductPortion productPortion = new ProductPortion();
         productPortion.setCourier(managedCourier);
         productPortion.setCountry(country);
@@ -136,9 +139,23 @@ public class ProductPortionServiceImpl implements ProductPortionService {
         productPortion.setLatitude(latitude);
         productPortion.setLongitude(longitude);
         productPortion.setAmount(amount);
-        productPortion.setPhotoUrl(photoUrl);
         productPortion.setCreatedAt(LocalDateTime.now());
+
+        // Save the ProductPortion
         ProductPortion savedProductPortion = productPortionRepository.save(productPortion);
+
+        // Create Photo entities for each photoUrl and associate with the ProductPortion
+        List<Photo> photos = new ArrayList<>();
+        for (String photoUrl : photoUrls) {
+            Photo photo = new Photo();
+            photo.setProductPortion(savedProductPortion);
+            photo.setPhotoUrl(photoUrl);
+            photos.add(photo);
+        }
+        savedProductPortion.setPhotos(photos);
+
+        // Save the updated ProductPortion with its photos
+        savedProductPortion = productPortionRepository.save(savedProductPortion);
         log.info(savedProductPortion.toString());
 
         // Increase the quantity in ProductInventoryDistrict

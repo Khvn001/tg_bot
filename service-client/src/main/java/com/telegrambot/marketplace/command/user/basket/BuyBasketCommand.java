@@ -4,6 +4,7 @@ import com.telegrambot.marketplace.command.Command;
 import com.telegrambot.marketplace.config.typehandlers.CallbackHandler;
 import com.telegrambot.marketplace.dto.bot.Answer;
 import com.telegrambot.marketplace.dto.bot.ClassifiedUpdate;
+import com.telegrambot.marketplace.entity.inventory.Photo;
 import com.telegrambot.marketplace.entity.inventory.ProductPortion;
 import com.telegrambot.marketplace.entity.order.Basket;
 import com.telegrambot.marketplace.entity.order.Order;
@@ -20,6 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -66,7 +68,11 @@ public class BuyBasketCommand implements Command {
                     message.append("Amount: ").append(productPortion.getAmount());
                     message.append("Coordinates: ").append(productPortion.getLatitude()).append(",")
                             .append(productPortion.getLongitude()).append("\n");
-                    message.append("Photo: ").append(productPortion.getPhotoUrl()).append("\n");
+                    message.append("Photo: ").append(productPortion.getPhotos().stream()
+                                .map(Photo::getPhotoUrl)
+                                .collect(Collectors.joining(", "))
+                            )
+                            .append("\n");
                 }
                 message.append("\n");
             }

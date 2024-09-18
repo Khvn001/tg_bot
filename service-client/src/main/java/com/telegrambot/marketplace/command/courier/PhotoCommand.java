@@ -38,7 +38,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -93,6 +92,8 @@ public class PhotoCommand implements Command {
             Long subcategoryId = Long.valueOf(parts[FOUR_NUMBER]);
             Long productId = Long.valueOf(parts[FIVE_NUMBER]);
             BigDecimal latitude = new BigDecimal(parts[SIX_NUMBER]);
+            log.debug("LATITUDE1: {}", parts[SIX_NUMBER]);
+            log.debug("LATITUDE2: {}", latitude);
             BigDecimal longitude = new BigDecimal(parts[SEVEN_NUMBER]);
             BigDecimal amount = new BigDecimal(parts[EIGHT_NUMBER]);
 
@@ -103,22 +104,35 @@ public class PhotoCommand implements Command {
             ProductSubcategory subcategory = productSubcategoryService.findById(subcategoryId);
             Product product = productService.findById(productId);
 
+            // Get all photos
             List<PhotoSize> photos = update.getUpdate().getMessage().getPhoto();
-            PhotoSize largestPhoto = photos.stream().max(Comparator.comparing(PhotoSize::getFileSize))
-                    .orElse(null);
-            if (largestPhoto != null) {
-                String fileId = largestPhoto.getFileId();
-                String photoName = "COURIER:" + user.getChatId() + "COUNTRY:" + country.getName().name()
-                        + "CITY:" + city.getName() + "DISTRICT:" + district.getName()
-                        + "CATEGORY:" + category.getName().name() + "SUBCATEGORY:" + subcategory.getName().name()
-                        + "PRODUCT:" + product.getName() + "LATITUDE:" + latitude + "LONGITUDE:" + longitude
-                        + "AMOUNT:" + amount + "FILEID:" + fileId + ".jpg";
-                String photoUrl = downloadPhotoFromTelegram(fileId, botConfig.getToken(), photoName);
-                if (photoUrl != null) {
-                    log.info(photoUrl);
+            if (!photos.isEmpty()) {
+                List<String> photoNames = new ArrayList<>();
+                List<byte[]> photoBytes = new ArrayList<>();
+
+                for (PhotoSize photo : photos) {
+                    String fileId = photo.getFileId();
+                    String photoName = "COURIER:" + user.getChatId() + "COUNTRY:" + country.getName().name()
+                            + "CITY:" + city.getName() + "DISTRICT:" + district.getName()
+                            + "CATEGORY:" + category.getName().name() + "SUBCATEGORY:" + subcategory.getName().name()
+                            + "PRODUCT:" + product.getName() + "LATITUDE:" + latitude + "LONGITUDE:" + longitude
+                            + "AMOUNT:" + amount + "FILEID:" + fileId + ".jpg";
+
+                    // Download photo bytes from Telegram
+                    byte[] photoData = downloadPhotoBytesFromTelegram(fileId, botConfig.getToken());
+                    if (photoData != null) {
+                        photoNames.add(photoName);
+                        photoBytes.add(photoData);
+                    }
+                }
+
+                // Upload photos to S3
+                List<String> photoUrls = s3Service.uploadFiles(photoNames, photoBytes);
+
+                if (photoUrls != null) {
                     ProductPortion savedProductPortion = productPortionService.saveProductPortion(
                             user, country, city, district, category, subcategory,
-                            product, latitude, longitude, amount, photoUrl);
+                            product, latitude, longitude, amount, photoUrls);
                     log.info(savedProductPortion.toString());
 
                     // Finish the form
@@ -151,7 +165,7 @@ public class PhotoCommand implements Command {
                 .build();
     }
 
-    private String downloadPhotoFromTelegram(final String fileId, final String botToken, final String fileName) {
+    private byte[] downloadPhotoBytesFromTelegram(final String fileId, final String botToken) {
         RestTemplate restTemplate = new RestTemplate();
         String filePathUrl = "https://api.telegram.org/bot" + botToken + "/getFile?file_id=" + fileId;
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(filePathUrl, JsonNode.class);
@@ -161,12 +175,8 @@ public class PhotoCommand implements Command {
             String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + filePath;
 
             // Download the file from the fileUrl
-            byte[] fileBytes = restTemplate.getForObject(fileUrl, byte[].class);
-            if (fileBytes != null) {
-                // Upload to S3
-                return s3Service.uploadFile(fileName, fileBytes);
-            }
+            return restTemplate.getForObject(fileUrl, byte[].class);
         }
-        return null;
+        return new byte[0];
     }
 }

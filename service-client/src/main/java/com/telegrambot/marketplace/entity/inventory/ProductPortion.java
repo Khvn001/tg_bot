@@ -8,6 +8,7 @@ import com.telegrambot.marketplace.entity.product.description.Product;
 import com.telegrambot.marketplace.entity.product.description.ProductCategory;
 import com.telegrambot.marketplace.entity.product.description.ProductSubcategory;
 import com.telegrambot.marketplace.entity.user.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +28,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "product_portions",
@@ -92,8 +95,8 @@ public class ProductPortion {
     @Column(nullable = false)
     private BigDecimal longitude;
 
-    @Column(name = "photo_url")
-    private String photoUrl;
+    @OneToMany(mappedBy = "productPortion", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Photo> photos;
 
     @Column(nullable = false)
     private boolean reserved;
