@@ -27,6 +27,7 @@ import com.telegrambot.marketplace.command.user.pathway.DistrictCommand;
 import com.telegrambot.marketplace.command.user.pathway.ProductCommand;
 import com.telegrambot.marketplace.command.user.pathway.StartCommand;
 import com.telegrambot.marketplace.command.user.pathway.SubcategoryCommand;
+import com.telegrambot.marketplace.command.user.profile.AddBalanceCommand;
 import com.telegrambot.marketplace.command.user.profile.ProfileInfoViewCommand;
 import com.telegrambot.marketplace.service.entity.CountryService;
 import com.telegrambot.marketplace.service.entity.StateService;
@@ -106,6 +107,7 @@ public class CommandConfig {
                                            final SubcategoryCommand subcategoryCommand,
                                            final ProductCommand productCommand,
                                            final ProfileInfoViewCommand profileInfoViewCommand,
+                                           final AddBalanceCommand addBalanceCommand,
                                            final UserService userService,
                                            final StateService stateService,
                                            final CountryService countryService) {
@@ -122,7 +124,7 @@ public class CommandConfig {
         callbackHandler.registerCallbackCommand("/city_", cityCommand);
         callbackHandler.registerCallbackCommand("/district_", districtCommand);
         callbackHandler.registerCallbackCommand("/profile_", profileInfoViewCommand);
-        callbackHandler.registerCallbackCommand("/add_balance_", profileInfoViewCommand);
+        callbackHandler.registerCallbackCommand("/add_balance_", addBalanceCommand);
         log.info(callbackHandler.toString());
         return callbackHandler;
     }
