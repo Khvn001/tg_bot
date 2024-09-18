@@ -129,7 +129,7 @@ public class SubcategoryCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         for (Product product : products) {
             buttons.add(InlineKeyboardButton.builder()

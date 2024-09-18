@@ -95,7 +95,7 @@ public class CityCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         for (ProductCategory category : categories) {
             buttons.add(InlineKeyboardButton.builder()

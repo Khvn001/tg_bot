@@ -84,7 +84,7 @@ public class CountryCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         if (country != null) {
             List<City> cities = cityService.findByCountryIdAndAllowed(country.getId());

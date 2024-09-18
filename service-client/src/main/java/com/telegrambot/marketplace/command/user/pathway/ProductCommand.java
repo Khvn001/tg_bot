@@ -141,7 +141,7 @@ public class ProductCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         for (District district : districts) {
             buttons.add(InlineKeyboardButton.builder()

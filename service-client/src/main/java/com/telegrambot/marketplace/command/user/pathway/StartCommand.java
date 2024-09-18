@@ -135,7 +135,7 @@ public class StartCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         for (Country country : countries) {
             buttons.add(InlineKeyboardButton.builder()

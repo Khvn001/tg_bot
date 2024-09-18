@@ -112,7 +112,7 @@ public class BuyBasketCommand implements Command {
         if (!success) {
             buttons.add(InlineKeyboardButton.builder()
                     .text("Add Balance")
-                    .callbackData("/add_balance_")
+                    .callbackData("/addBalance_")
                     .build());
             buttons.add(InlineKeyboardButton.builder()
                     .text("View Basket")

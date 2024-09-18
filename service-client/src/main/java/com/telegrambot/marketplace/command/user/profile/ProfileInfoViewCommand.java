@@ -87,7 +87,7 @@ public class ProfileInfoViewCommand implements Command {
 
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add Balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
 
         return buttons;

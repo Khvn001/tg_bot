@@ -62,7 +62,7 @@ public class OrdersCommand implements Command {
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Add balance")
-                .callbackData("/add_balance_")
+                .callbackData("/addBalance_")
                 .build());
         buttons.add(InlineKeyboardButton.builder()
                 .text("Delete All Orders")
