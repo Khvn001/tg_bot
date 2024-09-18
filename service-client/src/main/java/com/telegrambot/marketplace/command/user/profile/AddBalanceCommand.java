@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +37,12 @@ public class AddBalanceCommand implements Command {
     @SneakyThrows
     @Override
     public Answer getAnswer(final ClassifiedUpdate update, final User user) {
+        String messageToEncode = "Здравствуйте, хочу пополнить баланс. Мой ID: " + user.getId();
+
+        String encodedMessage = URLEncoder.encode(messageToEncode, StandardCharsets.UTF_8);
+
         String message = "Для пополнения баланса свяжитесь с администратором: https://t.me/" + adminUsername
-                + "?start=Здравствуйте, хочу пополнить баланс.";
+                + "?start=" + encodedMessage;
 
         // Create a button for returning to the profile
         List<InlineKeyboardButton> buttons = new ArrayList<>();

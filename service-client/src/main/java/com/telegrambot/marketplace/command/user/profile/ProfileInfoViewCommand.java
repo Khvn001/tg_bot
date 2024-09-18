@@ -52,11 +52,14 @@ public class ProfileInfoViewCommand implements Command {
     }
 
     private String generateProfileContentMessage(final User user) {
+        // Ensure the list is not null and initialized
+        int referralCount = user.getReferrals() != null ? user.getReferrals().size() : 0;
+
         return "Your profile information:\n" + "Name: " + user.getName() + "\n" +
                 "Balance: " + user.getBalance() + "\n" +
                 "hashName: " + user.getChatId() + "\n" +
                 "Personal Discount: " + user.getDiscount() + "\n" +
-                "Number of referrals: " + (long) user.getReferrals().size() + "\n";
+                "Number of referrals: " + referralCount + "\n";
     }
 
     private List<InlineKeyboardButton> getButtons(final User user) {
