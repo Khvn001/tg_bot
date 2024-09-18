@@ -29,7 +29,7 @@ public class AddBalanceCommand implements Command {
 
     @Override
     public Object getFindBy() {
-        return "/add_balance_";
+        return "/addBalance_";
     }
 
     @SneakyThrows
