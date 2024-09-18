@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User getUserWithReferrals(Long userId) {
+    public User getUserWithReferrals(final Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         // Initialize the referrals collection
         assert user != null;
