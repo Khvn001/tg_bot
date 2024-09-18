@@ -27,5 +27,6 @@ public interface ProductPortionService {
 
     ProductPortion saveProductPortion(User user, Country country, City city, District district,
                                       ProductCategory category, ProductSubcategory subcategory, Product product,
-                                      BigDecimal latitude, BigDecimal longitude, BigDecimal amount, List<String> photoUrls);
+                                      BigDecimal latitude, BigDecimal longitude, BigDecimal amount,
+                                      List<String> photoUrls);
 }
