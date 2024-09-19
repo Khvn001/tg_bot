@@ -11,6 +11,7 @@ import com.telegrambot.marketplace.entity.product.description.Product;
 import com.telegrambot.marketplace.entity.product.description.ProductCategory;
 import com.telegrambot.marketplace.entity.product.description.ProductSubcategory;
 import com.telegrambot.marketplace.entity.user.User;
+import com.telegrambot.marketplace.exception.NotFoundException;
 import com.telegrambot.marketplace.repository.ProductInventoryCityRepository;
 import com.telegrambot.marketplace.repository.ProductInventoryDistrictRepository;
 import com.telegrambot.marketplace.repository.ProductPortionRepository;
@@ -182,4 +183,44 @@ public class ProductPortionServiceImpl implements ProductPortionService {
         return savedProductPortion;
     }
 
+    @Override
+    public List<ProductPortion> getProductPortionsByCourier(final User courier) {
+        return productPortionRepository.findByCourier(courier);
+    }
+
+    @Override
+    public List<ProductPortion> getProductPortionsByCity(final City city) {
+        return productPortionRepository.findByCity(city);
+    }
+
+    @Override
+    public List<ProductPortion> getProductPortionsByDistrict(final District district) {
+        return productPortionRepository.findByDistrict(district);
+    }
+
+    @Override
+    public List<ProductPortion> getProductPortionsBySubcategory(final ProductSubcategory subcategory) {
+        return productPortionRepository.findByProductSubcategory(subcategory);
+    }
+
+    @Override
+    public List<ProductPortion> getProductPortionsByProduct(final Product product) {
+        return productPortionRepository.findByProduct(product);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductPortion(final Long productPortionId) {
+        if (productPortionRepository.existsById(productPortionId)) {
+            productPortionRepository.deleteById(productPortionId);
+        } else {
+            throw new NotFoundException("Product Portion not found with ID: " + productPortionId);
+        }
+    }
+
+    @Override
+    public ProductPortion findById(final Long productPortionId) {
+        return productPortionRepository.findById(productPortionId)
+                .orElseThrow(() -> new NotFoundException("Product Portion not found with ID: " + productPortionId));
+    }
 }

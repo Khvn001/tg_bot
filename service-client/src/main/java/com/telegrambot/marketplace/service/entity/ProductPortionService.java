@@ -29,4 +29,18 @@ public interface ProductPortionService {
                                       ProductCategory category, ProductSubcategory subcategory, Product product,
                                       BigDecimal latitude, BigDecimal longitude, BigDecimal amount,
                                       List<String> photoUrls);
+
+    List<ProductPortion> getProductPortionsByCourier(User courier);
+
+    List<ProductPortion> getProductPortionsByCity(City city);
+
+    List<ProductPortion> getProductPortionsByDistrict(District district);
+
+    List<ProductPortion> getProductPortionsBySubcategory(ProductSubcategory subcategory);
+
+    List<ProductPortion> getProductPortionsByProduct(Product product);
+
+    void deleteProductPortion(Long productPortionId);
+
+    ProductPortion findById(Long productPortionId);
 }

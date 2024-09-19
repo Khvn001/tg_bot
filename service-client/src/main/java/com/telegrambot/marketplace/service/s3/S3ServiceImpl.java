@@ -14,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -105,6 +107,111 @@ public class S3ServiceImpl implements S3Service {
         }
         return urls;
     }
+
+    public String uploadMultipartFile(final String name, final MultipartFile file) {
+        AmazonS3 s3Client = initializeS3Client();
+
+        try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+            s3Client.putObject(bucketName, name, inputStream, metadata);
+            log.info("Upload Service. Added file: " + name + " to bucket: " + bucketName);
+
+            // Return the public URL for the uploaded file
+            return s3Client.getUrl(bucketName, name).toExternalForm();
+        } catch (IOException e) {
+            log.error("Error reading MultipartFile. Reason: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Method to upload multiple MultipartFiles
+    public List<String> uploadMultipartFiles(final List<MultipartFile> files) {
+        List<String> urls = new ArrayList<>();
+
+        AmazonS3 s3Client = initializeS3Client();
+
+        try {
+            ExecutorService executorService = Executors.newFixedThreadPool(files.size());
+            List<Future<String>> futures = new ArrayList<>();
+
+            for (MultipartFile file : files) {
+                Future<String> future = executorService.submit(() -> {
+                    String objectKey = "uploaded_" + file.getOriginalFilename();
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(file.getSize());
+
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+                    s3Client.putObject(bucketName, objectKey, inputStream, metadata);
+                    log.info("Upload Service. Added file: " + objectKey + " to bucket: " + bucketName);
+
+                    // Return the public URL for the uploaded file
+                    return s3Client.getUrl(bucketName, objectKey).toExternalForm();
+                });
+
+                futures.add(future);
+            }
+
+            for (Future<String> future : futures) {
+                try {
+                    String url = future.get();
+                    urls.add(url);
+                } catch (InterruptedException | ExecutionException e) {
+                    log.error("One of the threads ended with an exception. Reason: {}", e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+
+            executorService.shutdown();
+        } catch (AmazonS3Exception e) {
+            log.error("Error uploading photos to S3. Reason: {}", e.getMessage());
+            throw new AmazonS3Exception(e.getMessage());
+        }
+
+        return urls;
+    }
+
+    public List<String> uploadMultipartFilesWithCustomNames(final List<String> names, final List<MultipartFile> files) {
+        List<String> urls = new ArrayList<>();
+        AmazonS3 s3Client = initializeS3Client();
+
+        try {
+            ExecutorService executorService = Executors.newFixedThreadPool(files.size());
+            List<Future<String>> futures = new ArrayList<>();
+
+            for (int i = 0; i < files.size(); i++) {
+                final int index = i;
+                MultipartFile file = files.get(index);
+                Future<String> future = executorService.submit(() -> {
+                    String objectKey = names.get(index);  // Use the custom name
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(file.getSize());
+
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+                    s3Client.putObject(bucketName, objectKey, inputStream, metadata);
+                    log.info("Upload Service. Added file: " + objectKey + " to bucket: " + bucketName);
+
+                    return s3Client.getUrl(bucketName, objectKey).toExternalForm();
+                });
+
+                futures.add(future);
+            }
+
+            for (Future<String> future : futures) {
+                urls.add(future.get());
+            }
+
+            executorService.shutdown();
+        } catch (Exception e) {
+            log.error("Error uploading photos to S3. Reason: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return urls;
+    }
+
 
     @Override
     public List<String> getBucketFilesUrls() {
