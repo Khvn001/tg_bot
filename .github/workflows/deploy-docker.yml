@@ -64,8 +64,8 @@ jobs:
               -e POSTGRES_JDBC_URL=${{ secrets.POSTGRES_JDBC_URL }} \
               -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} \
               -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-              -e S3_PUBLIC_URL=${{ secrets.S3_PUBLIC_URL }} \
-              -e S3_PRIVATE_URL=${{ secrets.S3_PRIVATE_URL }} \
+              -e S3_PUBLIC_URL=${{ secrets.S3_PUBLIC_URL }}\
+              -e S3_PRIVATE_URL=${{ secrets.S3_PRIVATE_URL }}\
               -e S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} \
               -e S3_PRIVATE_KEY=${{ secrets.S3_PRIVATE_KEY }} \
               -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
@@ -75,57 +75,57 @@ jobs:
               -e CORS_URL=${{ secrets.CORS_URL }} \
               ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
           EOF
-          
-
-      - name: Set up SSH for Second Server
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY_2 }}
-
-      - name: Ensure Docker is installed and updated on the server
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER_2 }}@${{ secrets.SERVER_HOST_2 }} << 'EOF'
-            # Check if Docker is installed, and install it if not
-            if ! [ -x "$(command -v docker)" ]; then
-              echo "Docker not found. Installing Docker..."
-              curl -fsSL https://get.docker.com -o get-docker.sh
-              sh get-docker.sh
-              sudo usermod -aG docker $USER
-              newgrp docker
-              rm get-docker.sh
-            else
-              echo "Docker is already installed. Checking for updates..."
-              sudo apt-get update
-              sudo apt-get install --only-upgrade docker-ce docker-ce-cli containerd.io
-            fi
-
-          EOF
-
-      - name: Deploy to Second Server
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER_2 }}@${{ secrets.SERVER_HOST_2 }} << 'EOF'
-            # Pull the latest image
-            docker pull ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
-
-            # Check if the container exists, then stop and remove it if it does
-            if [ "$(docker ps -a -q -f name=telegram_bot)" ]; then
-              docker stop telegram_bot
-              docker rm telegram_bot
-            fi
-
-            # Run the new container
-            docker run -d --name telegram_bot -p 8080:8080 \
-              -e POSTGRES_JDBC_URL=${{ secrets.POSTGRES_JDBC_URL_2 }} \
-              -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME_2 }} \
-              -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD_2 }} \
-              -e S3_PUBLIC_URL=${{ secrets.S3_PUBLIC_URL_2 }} \
-              -e S3_PRIVATE_URL=${{ secrets.S3_PRIVATE_URL_2 }} \
-              -e S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY_2 }} \
-              -e S3_PRIVATE_KEY=${{ secrets.S3_PRIVATE_KEY_2 }} \
-              -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME_2 }} \
-              -e BOT_NAME=${{ secrets.BOT_NAME_2 }} \
-              -e BOT_TOKEN=${{ secrets.BOT_TOKEN_2 }} \
-              -e BOT_ADMIN_USER=${{ secrets.BOT_ADMIN_USER_2 }} \
-              -e CORS_URL=${{ secrets.CORS_URL_2 }} \
-              ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
-          EOF
+#
+#
+#      - name: Set up SSH for Second Server
+#        uses: webfactory/ssh-agent@v0.5.3
+#        with:
+#          ssh-private-key: ${{ secrets.SERVER_SSH_KEY_2 }}
+#
+#      - name: Ensure Docker is installed and updated on the server
+#        run: |
+#          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER_2 }}@${{ secrets.SERVER_HOST_2 }} << 'EOF'
+#            # Check if Docker is installed, and install it if not
+#            if ! [ -x "$(command -v docker)" ]; then
+#              echo "Docker not found. Installing Docker..."
+#              curl -fsSL https://get.docker.com -o get-docker.sh
+#              sh get-docker.sh
+#              sudo usermod -aG docker $USER
+#              newgrp docker
+#              rm get-docker.sh
+#            else
+#              echo "Docker is already installed. Checking for updates..."
+#              sudo apt-get update
+#              sudo apt-get install --only-upgrade docker-ce docker-ce-cli containerd.io
+#            fi
+#
+#          EOF
+#
+#      - name: Deploy to Second Server
+#        run: |
+#          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER_2 }}@${{ secrets.SERVER_HOST_2 }} << 'EOF'
+#            # Pull the latest image
+#            docker pull ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+#
+#            # Check if the container exists, then stop and remove it if it does
+#            if [ "$(docker ps -a -q -f name=telegram_bot)" ]; then
+#              docker stop telegram_bot
+#              docker rm telegram_bot
+#            fi
+#
+#            # Run the new container
+#            docker run -d --name telegram_bot -p 8080:8080 \
+#              -e POSTGRES_JDBC_URL=${{ secrets.POSTGRES_JDBC_URL_2 }} \
+#              -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME_2 }} \
+#              -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD_2 }} \
+#              -e S3_PUBLIC_URL=${{ secrets.S3_PUBLIC_URL_2 }} \
+#              -e S3_PRIVATE_URL=${{ secrets.S3_PRIVATE_URL_2 }} \
+#              -e S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY_2 }} \
+#              -e S3_PRIVATE_KEY=${{ secrets.S3_PRIVATE_KEY_2 }} \
+#              -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME_2 }} \
+#              -e BOT_NAME=${{ secrets.BOT_NAME_2 }} \
+#              -e BOT_TOKEN=${{ secrets.BOT_TOKEN_2 }} \
+#              -e BOT_ADMIN_USER=${{ secrets.BOT_ADMIN_USER_2 }} \
+#              -e CORS_URL=${{ secrets.CORS_URL_2 }} \
+#              ${{ secrets.DOCKER_USERNAME }}/telegram_bot:latest
+#          EOF
