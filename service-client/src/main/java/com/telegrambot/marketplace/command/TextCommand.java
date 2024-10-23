@@ -31,9 +31,12 @@ import com.telegrambot.marketplace.service.entity.ProductService;
 import com.telegrambot.marketplace.service.entity.ProductSubcategoryService;
 import com.telegrambot.marketplace.service.entity.StateService;
 import com.telegrambot.marketplace.service.entity.UserService;
+import com.telegrambot.marketplace.service.util.PasswordValidator;
+import jakarta.persistence.OptimisticLockException;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -59,6 +62,7 @@ public class TextCommand implements Command {
     private final CityService cityService;
     private final ProductCategoryService productCategoryService;
     private final ProductSubcategoryService productSubcategoryService;
+    private final PasswordEncoder passwordEncoder;
 
     private static final int ARGS_SIZE = 3;
 
@@ -89,7 +93,19 @@ public class TextCommand implements Command {
         if (StateType.CREATE_PASSWORD.equals(newUser.getState().getStateType())
                 && Objects.equals(newUser.getPassword(), "")) {
             // User is setting the password
-            newUser.setPassword(update.getUpdate().getMessage().getText());
+            String plainPassword = update.getUpdate().getMessage().getText();
+
+            // Validate password
+            if (!PasswordValidator.isValid(plainPassword)) {
+                return new SendMessageBuilder()
+                        .chatId(user.getChatId())
+                        .message("Password must be at least 8 characters long, contain at least one digit, " +
+                                "one uppercase letter, and one lowercase letter.")
+                        .build();
+            }
+
+            String encryptedPassword = passwordEncoder.encode(plainPassword); // Encrypt the password
+            newUser.setPassword(encryptedPassword); // Store the encrypted password
             State userNewState = newUser.getState();
             userNewState.setStateType(StateType.ENTER_REFERRAL);
             stateService.save(userNewState);
@@ -97,7 +113,8 @@ public class TextCommand implements Command {
 
             return new SendMessageBuilder()
                     .chatId(user.getChatId())
-                    .message("Password set successfully! If you have referral, please type referral User's hashName:")
+                    .message("Password set successfully! If you have referral, please type referral User's hashName," +
+                            " if you do not have any referral type 'No' :")
                     .build();
         } else if (StateType.ENTER_REFERRAL.equals(newUser.getState().getStateType())) {
             // User is entering referral
@@ -171,10 +188,32 @@ public class TextCommand implements Command {
             }
 
             List<ProductPortion> selectedProductPortions = new ArrayList<>();
-            for (int i = 0; i < requestedAmount; i++) {
+            int remainingAmount = requestedAmount; // Track how much is left to reserve
+
+            for (int i = 0; i < productPortions.size() && remainingAmount > 0; i++) {
                 ProductPortion productPortion = productPortions.get(i);
-                selectedProductPortions.add(productPortion);
-                productPortionService.reserveProductPortion(productPortion);
+
+                // Check if the portion can be reserved (i.e., amount is less than or equal to remaining)
+                if (productPortion.getAmount().compareTo(BigDecimal.valueOf(remainingAmount)) <= 0) {
+                    // Reserve the entire portion if it is available
+                    try {
+                        productPortionService.reserveProductPortion(productPortion);
+                        selectedProductPortions.add(productPortion);
+                        remainingAmount -= productPortion.getAmount().intValue();
+                    } catch (OptimisticLockException e) {
+                        // Handle optimistic locking exception
+                        log.error("Conflict while reserving product portion, retrying...");
+                        i--; // Repeat the current index in the next iteration
+                    } catch (IllegalArgumentException e) {
+                        // Handle the case where the portion is already reserved
+                        log.error("Error while reserving product portion: {}", e.getMessage());
+                        // No need to continue; simply proceed to the next product portion
+                    } catch (Exception e) {
+                        // Handle any other exceptions
+                        log.error("Unexpected error while reserving product portion: {}", e.getMessage());
+                        // Move on to the next product portion
+                    }
+                }
             }
 
             Order order = orderService.createOrder(user, selectedProductPortions);
@@ -185,6 +224,19 @@ public class TextCommand implements Command {
             user.getState().setValue(null);
             stateService.save(user.getState());
             userService.save(user);
+
+            // Check if there are still amounts left to reserve
+            if (remainingAmount > 0) {
+                int leftAmount = requestedAmount - remainingAmount;
+                return new SendMessageBuilder()
+                        .chatId(user.getChatId())
+                        .message("Could not reserve the full requested amount. Ordered amount: " + leftAmount +
+                                "Order created successfully and added to your basket. " +
+                                "You have 30 minutes to buy this order. " +
+                                "Product is reserved for you for that time.")
+                        .buttons(getBasketOptionsButtons(cityId, countryName))
+                        .build();
+            }
 
             return new SendMessageBuilder()
                     .chatId(user.getChatId())

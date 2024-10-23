@@ -89,10 +89,10 @@ public class ProductPortion {
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 10)
     private BigDecimal latitude;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 10)
     private BigDecimal longitude;
 
     @OneToMany(mappedBy = "productPortion", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

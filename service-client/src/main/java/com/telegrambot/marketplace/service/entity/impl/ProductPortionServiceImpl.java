@@ -82,18 +82,22 @@ public class ProductPortionServiceImpl implements ProductPortionService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void reserveProductPortion(final ProductPortion productPortion) {
-        productPortion.setReserved(true);
-        productPortionRepository.save(productPortion);
-        ProductInventoryCity productInventoryCity = productInventoryCityService
-                .findByCityAndProduct(productPortion.getCity(), productPortion.getProduct());
-        productInventoryCity.setQuantity(productInventoryCity.getQuantity().subtract(productPortion.getAmount()));
-        productInventoryCityService.save(productInventoryCity);
+        if (!productPortion.isReserved()) {
+            productPortion.setReserved(true);
+            productPortionRepository.save(productPortion);
+            ProductInventoryCity productInventoryCity = productInventoryCityService
+                    .findByCityAndProduct(productPortion.getCity(), productPortion.getProduct());
+            productInventoryCity.setQuantity(productInventoryCity.getQuantity().subtract(productPortion.getAmount()));
+            productInventoryCityService.save(productInventoryCity);
 
-        ProductInventoryDistrict productInventoryDistrict = productInventoryDistrictService
-                .findByDistrictAndProduct(productPortion.getDistrict(), productPortion.getProduct());
-        productInventoryDistrict.setQuantity(
-                productInventoryDistrict.getQuantity().subtract(productPortion.getAmount()));
-        productInventoryDistrictService.save(productInventoryDistrict);
+            ProductInventoryDistrict productInventoryDistrict = productInventoryDistrictService
+                    .findByDistrictAndProduct(productPortion.getDistrict(), productPortion.getProduct());
+            productInventoryDistrict.setQuantity(
+                    productInventoryDistrict.getQuantity().subtract(productPortion.getAmount()));
+            productInventoryDistrictService.save(productInventoryDistrict);
+        } else {
+            throw new IllegalArgumentException("Product Portion Already Reserved");
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.telegrambot.marketplace.dto.web.TwoTokenResponseDto;
 import com.telegrambot.marketplace.dto.web.UnifiedResponseDto;
 import com.telegrambot.marketplace.entity.user.User;
 import com.telegrambot.marketplace.exception.NotFoundException;
+import com.telegrambot.marketplace.service.auth.PasswordVerifier;
 import com.telegrambot.marketplace.service.auth.TokenService;
 import com.telegrambot.marketplace.service.entity.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,7 @@ public class AuthController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final PasswordVerifier passwordVerifier;
 
     @Operation(summary = "Авторизация в приложение.")
     @ApiResponse(responseCode = "200", description = "ok")
@@ -97,7 +99,7 @@ public class AuthController {
             throw new NotFoundException("User Not Found");
         }
 
-        if (!user.getPassword().equals(loginRequestDto.getPassword())) {
+        if (!passwordVerifier.verifyPassword(loginRequestDto.getPassword(), user.getPassword())) {
             throw new AccessDeniedException("Wrong password.");
         }
 
